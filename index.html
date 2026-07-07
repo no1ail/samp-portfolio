@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite SA-MP Development | Pawn Scripting</title>
+    <meta name="description" content="Professional SA-MP Pawn Scripting Services. Custom features, scratch gamemodes, bug fixing, and optimization for your San Andreas Multiplayer server.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="background-glow"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">SA-MP<span>DEV</span></div>
+            <ul class="nav-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#why-me">Why Me</a></li>
+                <li><a href="#request-feature">Request</a></li>
+                <li><a href="#contact" class="btn-outline">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="hero-content">
+            <div class="badge">🔥 Premium Pawn Scripting</div>
+            <h1>Level Up Your <br><span class="text-gradient">SA-MP Server</span></h1>
+            <p>From complex custom systems to full scratch gamemodes. High-performance, modern Pawn code tailored to your exact needs.</p>
+            <div class="hero-buttons">
+                <a href="#services" class="btn-primary">View Services</a>
+                <a href="#contact" class="btn-secondary">Get a Quote</a>
+            </div>
+        </div>
+        <div class="hero-image-container">
+            <!-- Image placeholder, will be replaced with generated image -->
+            <img id="hero-img" src="assets/hero_bg.jpg" alt="SA-MP Code and Gameplay" class="floating-image" onerror="this.src='https://via.placeholder.com/600x400/1a1a2e/00d2ff?text=SA-MP+Development'">
+        </div>
+    </header>
+
+    <section class="services" id="services">
+        <div class="section-header">
+            <h2>My Services</h2>
+            <p>Everything you need to run a successful SA-MP community.</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card" data-tilt>
+                <div class="icon">⚙️</div>
+                <h3>Custom Features</h3>
+                <p>Advanced dynamic systems, TextDraw UIs, custom factions, and complex economy scripts integrated seamlessly into your existing gamemode.</p>
+            </div>
+            
+            <div class="service-card" data-tilt>
+                <div class="icon">🚀</div>
+                <h3>Scratch Gamemodes</h3>
+                <p>Full Roleplay, Freeroam, or Deathmatch gamemodes built from the ground up using modular architecture, y_less includes, and MySQL/SQLite.</p>
+            </div>
+            
+            <div class="service-card" data-tilt>
+                <div class="icon">🛠️</div>
+                <h3>Bug Fixing & Optimization</h3>
+                <p>Got a slow server? I'll profile your code, fix memory leaks, optimize slow loops, and resolve crash issues to ensure a buttery smooth 50 TPS.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-me" id="why-me">
+        <div class="section-header">
+            <h2>Why Choose Me?</h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature">
+                <h4>Clean & Modern Code</h4>
+                <p>No messy spaghetti code. I use modern Pawn practices, descriptive variables, and modular setups.</p>
+            </div>
+            <div class="feature">
+                <h4>Fast Delivery</h4>
+                <p>Deadlines matter. I provide transparent timelines and stick to them, keeping you updated.</p>
+            </div>
+            <div class="feature">
+                <h4>Secure & Exploit-Free</h4>
+                <p>All inputs are sanitized, queries are parameterized (ORM/MySQL), and anti-cheat measures are considered.</p>
+            </div>
+            <div class="feature">
+                <h4>Ongoing Support</h4>
+                <p>I don't just deliver and vanish. I offer bug fixes and support for the code I write.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="request-feature" id="request-feature">
+        <div class="section-header">
+            <h2>Request a Feature</h2>
+            <p>Describe exactly what you need built, and I'll get back to you with a quote.</p>
+        </div>
+        <div class="form-container">
+            <form action="#" method="POST" class="feature-form">
+                <div class="form-group">
+                    <label for="client-name">Your Discord Tag</label>
+                    <input type="text" id="client-name" name="client-name" placeholder="e.g. nelo6577" required>
+                </div>
+                <div class="form-group">
+                    <label for="feature-title">Feature Title</label>
+                    <input type="text" id="feature-title" name="feature-title" placeholder="e.g. Dynamic House System" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Describe the Feature</label>
+                    <textarea id="description" name="description" rows="5" placeholder="Please describe how the feature should work in detail..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary submit-btn">Send Request</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="contact-box">
+            <h2>Ready to start your project?</h2>
+            <p>Let's discuss your ideas and make them a reality.</p>
+            <div class="contact-methods">
+                <a href="#" class="contact-btn discord">
+                    <span class="icon">💬</span> Discord: nelo6577
+                </a>
+                <a href="mailto:sadassds65@gmail.com" class="contact-btn email">
+                    <span class="icon">📧</span> Email Me
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 SA-MP DEV. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
