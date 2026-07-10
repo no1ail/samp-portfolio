@@ -5,18 +5,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.scrollY > 50) {
             nav.classList.add('scrolled');
         } else {
-            nav.classList.add('scrolled');
             nav.classList.remove('scrolled');
         }
     });
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('mobile-menu');
+    const navLinks = document.querySelector('.nav-links');
     
-    // Fix navbar scroll effect
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
+    if(menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // Close menu when clicking a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            if(navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
     });
 
     // Intersection Observer for scroll animations
