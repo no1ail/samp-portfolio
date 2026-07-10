@@ -338,7 +338,9 @@ nav.scrolled {
 /* Contact */
 .contact-content {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 2rem;
     align-items: center;
     text-align: center;
