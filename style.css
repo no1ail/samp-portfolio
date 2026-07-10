@@ -449,7 +449,7 @@ footer {
     font-size: var(--size);
     color: var(--accent-primary);
     opacity: 0.15; 
-    animation: float 10s ease-in-out infinite;
+    animation: float 5s ease-in-out infinite;
     animation-delay: var(--delay);
 }
 
