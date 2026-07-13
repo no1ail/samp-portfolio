@@ -47,4 +47,57 @@ document.addEventListener('DOMContentLoaded', () => {
     fadeElements.forEach(el => {
         observer.observe(el);
     });
+
+    // Typewriter Animation
+    const text1 = "Hi, I'm ";
+    const text2 = "Islam Cabugatan";
+    const el1 = document.getElementById('typewriter-text-1');
+    const el2 = document.getElementById('typewriter-text-2');
+    
+    if (el1 && el2) {
+        let charIndex1 = 0;
+        let charIndex2 = 0;
+        let isDeleting = false;
+        let typingSpeed = 100;
+        let deletingSpeed = 50;
+        let pauseBeforeDelete = 2000;
+        let pauseBeforeType = 500;
+
+        function typeWriter() {
+            if (!isDeleting) {
+                // Typing
+                if (charIndex1 < text1.length) {
+                    charIndex1++;
+                    el1.textContent = text1.substring(0, charIndex1);
+                    setTimeout(typeWriter, typingSpeed);
+                } else if (charIndex2 < text2.length) {
+                    charIndex2++;
+                    el2.textContent = text2.substring(0, charIndex2);
+                    setTimeout(typeWriter, typingSpeed);
+                } else {
+                    // Finished typing both, pause before deleting
+                    isDeleting = true;
+                    setTimeout(typeWriter, pauseBeforeDelete);
+                }
+            } else {
+                // Deleting
+                if (charIndex2 > 0) {
+                    charIndex2--;
+                    el2.textContent = text2.substring(0, charIndex2);
+                    setTimeout(typeWriter, deletingSpeed);
+                } else if (charIndex1 > 0) {
+                    charIndex1--;
+                    el1.textContent = text1.substring(0, charIndex1);
+                    setTimeout(typeWriter, deletingSpeed);
+                } else {
+                    // Finished deleting both, pause before typing again
+                    isDeleting = false;
+                    setTimeout(typeWriter, pauseBeforeType);
+                }
+            }
+        }
+        
+        // Start the animation
+        setTimeout(typeWriter, 500);
+    }
 });
