@@ -1,4 +1,94 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Audio Controller ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Mute state management
+    let isMuted = localStorage.getItem('site_muted') === 'true';
+    
+    const muteToggleBtn = document.getElementById('mute-toggle');
+    const muteIcon = document.getElementById('mute-icon');
+    
+    function updateMuteIcon() {
+        if (!muteIcon) return;
+        if (isMuted) {
+            muteIcon.classList.remove('fa-volume-up');
+            muteIcon.classList.add('fa-volume-mute');
+            muteToggleBtn.setAttribute('aria-label', 'Unmute Sounds');
+        } else {
+            muteIcon.classList.remove('fa-volume-mute');
+            muteIcon.classList.add('fa-volume-up');
+            muteToggleBtn.setAttribute('aria-label', 'Mute Sounds');
+        }
+    }
+    
+    if (muteToggleBtn) {
+        updateMuteIcon();
+        muteToggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            isMuted = !isMuted;
+            localStorage.setItem('site_muted', isMuted);
+            updateMuteIcon();
+            
+            // Play a sound to confirm unmute
+            if (!isMuted) {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                playClickSound();
+            }
+        });
+    }
+
+    function playHoverSound() {
+        if (isMuted) return;
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.05);
+        
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 0.01);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+    }
+
+    function playClickSound() {
+        if (isMuted) return;
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1);
+        
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 0.01);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+        
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    // Attach to interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, .glass-card, .theme-switch, .menu-toggle');
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', playHoverSound);
+        el.addEventListener('mousedown', playClickSound);
+    });
+    // --- End Audio Controller ---
+
     // Theme Toggle Logic
     const themeCheckbox = document.getElementById('theme-checkbox');
     

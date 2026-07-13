@@ -221,6 +221,25 @@ nav.scrolled {
     gap: 1.5rem;
 }
 
+.mute-btn {
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color var(--transition-base), transform var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+}
+
+.mute-btn:hover {
+    color: var(--color-brand);
+    transform: scale(1.1);
+}
+
 /* Theme Switch */
 .theme-switch {
     display: inline-block;
