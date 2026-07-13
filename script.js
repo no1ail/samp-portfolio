@@ -1,4 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Theme Toggle Logic
+    const themeCheckbox = document.getElementById('theme-checkbox');
+    
+    // Set default theme to dark if not set, since user requested dark mode recently
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme) {
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            if(themeCheckbox) themeCheckbox.checked = true;
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            if(themeCheckbox) themeCheckbox.checked = false;
+        }
+    } else {
+        // Default to dark mode based on recent preference
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        if(themeCheckbox) themeCheckbox.checked = true;
+    }
+
+    if (themeCheckbox) {
+        themeCheckbox.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    }
+
     // Navbar scroll effect
     const nav = document.querySelector('nav');
     window.addEventListener('scroll', () => {
