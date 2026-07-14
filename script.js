@@ -224,8 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Live Viewers & Chat ---
+    let socket;
     if (typeof io !== 'undefined') {
-        const socket = io();
+        const backendUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
+            ? '' 
+            : 'https://samp-portfolio.onrender.com';
+        socket = io(backendUrl);
         
         const viewerCountEl = document.getElementById('live-viewers');
         const viewerCountPlusEl = document.getElementById('live-viewers-plus');
@@ -313,8 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const messageText = chatInputFallback.value.trim();
             if (messageText) {
                 // If socket exists, emit to server
-                if (typeof io !== 'undefined') {
-                    const socket = io();
+                if (socket) {
                     socket.emit('chat message', {
                         author: myGuestName,
                         text: messageText
