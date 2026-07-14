@@ -251,9 +251,13 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('guest_name', myGuestName);
         }
 
-        // Open/Close chat removed from here
         function appendMessage(msg) {
             if (!chatMessages) return;
+            
+            const expiresAt = msg.timestamp + 60000;
+            const remainingInitial = expiresAt - Date.now();
+            if (remainingInitial <= 0) return; // already expired
+            
             const isSelf = msg.author === myGuestName;
             const msgEl = document.createElement('div');
             msgEl.classList.add('chat-message');
@@ -261,7 +265,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const authorEl = document.createElement('div');
             authorEl.classList.add('chat-author');
-            authorEl.innerText = msg.author;
+            authorEl.style.display = 'flex';
+            authorEl.style.justifyContent = 'space-between';
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.innerText = msg.author;
+            
+            const timerSpan = document.createElement('span');
+            timerSpan.style.opacity = '0.7';
+            timerSpan.style.fontSize = '0.7rem';
+            timerSpan.innerText = Math.ceil(remainingInitial / 1000) + 's';
+            
+            authorEl.appendChild(nameSpan);
+            authorEl.appendChild(timerSpan);
             
             const textEl = document.createElement('div');
             textEl.innerText = msg.text;
@@ -271,6 +287,16 @@ document.addEventListener('DOMContentLoaded', () => {
             chatMessages.appendChild(msgEl);
             
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            const interval = setInterval(() => {
+                const left = expiresAt - Date.now();
+                if (left <= 0) {
+                    clearInterval(interval);
+                    msgEl.remove();
+                } else {
+                    timerSpan.innerText = Math.ceil(left / 1000) + 's';
+                }
+            }, 1000);
         }
 
         socket.on('chat history', (messages) => {
@@ -325,11 +351,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     // Fallback: If no server (running locally via file://), just show the message locally
                     const chatMessages = document.getElementById('chat-messages');
+                    const expiresAt = Date.now() + 60000;
                     const msgEl = document.createElement('div');
                     msgEl.classList.add('chat-message', 'self');
-                    msgEl.innerHTML = `<div class="chat-author">${myGuestName} (Offline)</div><div>${messageText}</div>`;
+                    msgEl.innerHTML = `
+                        <div class="chat-author" style="display:flex; justify-content:space-between;">
+                            <span>${myGuestName} (Offline)</span>
+                            <span class="offline-timer" style="opacity:0.7; font-size:0.7rem;">60s</span>
+                        </div>
+                        <div>${messageText}</div>
+                    `;
                     chatMessages.appendChild(msgEl);
                     chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    const timerSpan = msgEl.querySelector('.offline-timer');
+                    const interval = setInterval(() => {
+                        const left = expiresAt - Date.now();
+                        if (left <= 0) {
+                            clearInterval(interval);
+                            msgEl.remove();
+                        } else {
+                            timerSpan.innerText = Math.ceil(left / 1000) + 's';
+                        }
+                    }, 1000);
                 }
                 chatInputFallback.value = '';
             }

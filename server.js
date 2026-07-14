@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname)));
 // State
 let viewerCount = 0;
 let messages = []; // Array of { id, author, text, timestamp }
-const MESSAGE_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
+const MESSAGE_EXPIRY_MS = 60 * 1000; // 1 minute
 
 // Helper to clean old messages
 function cleanOldMessages() {
@@ -31,8 +31,8 @@ function cleanOldMessages() {
     }
 }
 
-// Run cleanup every minute
-setInterval(cleanOldMessages, 60 * 1000);
+// Run cleanup every 10 seconds
+setInterval(cleanOldMessages, 10 * 1000);
 
 io.on('connection', (socket) => {
     // Increase viewer count
