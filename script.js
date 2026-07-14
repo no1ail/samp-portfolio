@@ -222,4 +222,305 @@ document.addEventListener('DOMContentLoaded', () => {
         // Start the animation
         setTimeout(typeWriter, 500);
     }
+
+    // --- Live Viewers & Chat ---
+    if (typeof io !== 'undefined') {
+        const socket = io();
+        
+        const viewerCountEl = document.getElementById('live-viewers');
+        const viewerCountPlusEl = document.getElementById('live-viewers-plus');
+        
+        socket.on('viewer count update', (count) => {
+            if (viewerCountEl) viewerCountEl.innerText = count;
+            if (viewerCountPlusEl) viewerCountPlusEl.innerText = count > 3 ? (count - 3) : 0;
+        });
+
+        // Chat UI Elements
+        const chatModal = document.getElementById('chat-modal');
+        const openChatBtn = document.getElementById('open-chat-btn');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // Random Guest Name
+        let myGuestName = localStorage.getItem('guest_name');
+        if (!myGuestName) {
+            myGuestName = 'Guest_' + Math.floor(Math.random() * 10000);
+            localStorage.setItem('guest_name', myGuestName);
+        }
+
+        // Open/Close Chat
+        if (openChatBtn) {
+            openChatBtn.addEventListener('click', () => {
+                chatModal.classList.add('active');
+                setTimeout(() => chatInput.focus(), 300);
+            });
+        }
+        if (closeChatBtn) {
+            closeChatBtn.addEventListener('click', () => {
+                chatModal.classList.remove('active');
+            });
+        }
+
+        function appendMessage(msg) {
+            if (!chatMessages) return;
+            const isSelf = msg.author === myGuestName;
+            const msgEl = document.createElement('div');
+            msgEl.classList.add('chat-message');
+            if (isSelf) msgEl.classList.add('self');
+            
+            const authorEl = document.createElement('div');
+            authorEl.classList.add('chat-author');
+            authorEl.innerText = msg.author;
+            
+            const textEl = document.createElement('div');
+            textEl.innerText = msg.text;
+            
+            msgEl.appendChild(authorEl);
+            msgEl.appendChild(textEl);
+            chatMessages.appendChild(msgEl);
+            
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        socket.on('chat history', (messages) => {
+            if (chatMessages) chatMessages.innerHTML = '';
+            messages.forEach(appendMessage);
+        });
+
+        socket.on('chat message', (msg) => {
+            appendMessage(msg);
+        });
+
+        if (chatForm) {
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (chatInput.value.trim()) {
+                    socket.emit('chat message', {
+                        author: myGuestName,
+                        text: chatInput.value.trim()
+                    });
+                    chatInput.value = '';
+                }
+            });
+        }
+    }
+
+    // --- Snake Game ---
+    const snakeModal = document.getElementById('snake-modal');
+    const openSnakeBtn = document.getElementById('open-snake-btn');
+    const closeSnakeBtn = document.getElementById('close-snake-btn');
+    const startSnakeBtn = document.getElementById('start-snake-btn');
+    const canvas = document.getElementById('snake-canvas');
+    const scoreEl = document.getElementById('snake-score');
+    const highScoreEl = document.getElementById('snake-high-score');
+
+    if (openSnakeBtn) {
+        openSnakeBtn.addEventListener('click', () => {
+            snakeModal.classList.add('active');
+        });
+    }
+    if (closeSnakeBtn) {
+        closeSnakeBtn.addEventListener('click', () => {
+            snakeModal.classList.remove('active');
+            if (gameInterval) clearInterval(gameInterval);
+            startSnakeBtn.style.display = 'block';
+        });
+    }
+
+    let ctx;
+    if (canvas) {
+        ctx = canvas.getContext('2d');
+    }
+    
+    let snake = [];
+    let dx = 10;
+    let dy = 0;
+    let foodX;
+    let foodY;
+    let score = 0;
+    let highScore = localStorage.getItem('snake_high_score') || 0;
+    if(highScoreEl) highScoreEl.innerText = highScore;
+    let gameInterval;
+    let gameSpeed = 100;
+    let gameStarted = false;
+
+    function initGame() {
+        snake = [
+            { x: 150, y: 150 },
+            { x: 140, y: 150 },
+            { x: 130, y: 150 },
+            { x: 120, y: 150 },
+            { x: 110, y: 150 }
+        ];
+        score = 0;
+        dx = 10;
+        dy = 0;
+        if(scoreEl) scoreEl.innerText = score;
+        createFood();
+    }
+
+    function clearCanvas() {
+        if (!ctx) return;
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-canvas') || '#111';
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-border') || '#333';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawSnakePart(snakePart) {
+        if (!ctx) return;
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-brand') || 'lightgreen';
+        ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+        ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
+        ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
+    }
+
+    function drawSnake() {
+        snake.forEach(drawSnakePart);
+    }
+
+    function advanceSnake() {
+        const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+        snake.unshift(head);
+
+        const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
+        if (didEatFood) {
+            score += 10;
+            if(scoreEl) scoreEl.innerText = score;
+            createFood();
+        } else {
+            snake.pop();
+        }
+    }
+
+    function randomTen(min, max) {
+        return Math.round((Math.random() * (max - min) + min) / 10) * 10;
+    }
+
+    function createFood() {
+        foodX = randomTen(0, canvas.width - 10);
+        foodY = randomTen(0, canvas.height - 10);
+        snake.forEach(function isFoodOnSnake(part) {
+            const foodIsOnSnake = part.x == foodX && part.y == foodY;
+            if (foodIsOnSnake) createFood();
+        });
+    }
+
+    function drawFood() {
+        if (!ctx) return;
+        ctx.fillStyle = 'red';
+        ctx.strokeStyle = 'darkred';
+        ctx.fillRect(foodX, foodY, 10, 10);
+        ctx.strokeRect(foodX, foodY, 10, 10);
+    }
+
+    function didGameEnd() {
+        for (let i = 4; i < snake.length; i++) {
+            const didCollide = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
+            if (didCollide) return true;
+        }
+        const hitLeftWall = snake[0].x < 0;
+        const hitRightWall = snake[0].x >= canvas.width;
+        const hitToptWall = snake[0].y < 0;
+        const hitBottomWall = snake[0].y >= canvas.height;
+
+        return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall;
+    }
+
+    function main() {
+        if (didGameEnd()) {
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('snake_high_score', highScore);
+                if(highScoreEl) highScoreEl.innerText = highScore;
+            }
+            gameStarted = false;
+            startSnakeBtn.style.display = 'block';
+            startSnakeBtn.innerText = 'Game Over - Play Again';
+            return;
+        }
+
+        gameInterval = setTimeout(function onTick() {
+            clearCanvas();
+            drawFood();
+            advanceSnake();
+            drawSnake();
+            main();
+        }, gameSpeed);
+    }
+
+    function changeDirection(event) {
+        const LEFT_KEY = 37;
+        const RIGHT_KEY = 39;
+        const UP_KEY = 38;
+        const DOWN_KEY = 40;
+        
+        const W_KEY = 87;
+        const A_KEY = 65;
+        const S_KEY = 83;
+        const D_KEY = 68;
+
+        if (!gameStarted) return;
+
+        const keyPressed = event.keyCode;
+        const goingUp = dy === -10;
+        const goingDown = dy === 10;
+        const goingRight = dx === 10;
+        const goingLeft = dx === -10;
+
+        if ((keyPressed === LEFT_KEY || keyPressed === A_KEY) && !goingRight) {
+            dx = -10;
+            dy = 0;
+        }
+        if ((keyPressed === UP_KEY || keyPressed === W_KEY) && !goingDown) {
+            dx = 0;
+            dy = -10;
+        }
+        if ((keyPressed === RIGHT_KEY || keyPressed === D_KEY) && !goingLeft) {
+            dx = 10;
+            dy = 0;
+        }
+        if ((keyPressed === DOWN_KEY || keyPressed === S_KEY) && !goingUp) {
+            dx = 0;
+            dy = 10;
+        }
+    }
+
+    // Touch controls / D-pad
+    function triggerDirection(dir) {
+        if (!gameStarted) return;
+        const goingUp = dy === -10;
+        const goingDown = dy === 10;
+        const goingRight = dx === 10;
+        const goingLeft = dx === -10;
+
+        if (dir === 'LEFT' && !goingRight) { dx = -10; dy = 0; }
+        if (dir === 'UP' && !goingDown) { dx = 0; dy = -10; }
+        if (dir === 'RIGHT' && !goingLeft) { dx = 10; dy = 0; }
+        if (dir === 'DOWN' && !goingUp) { dx = 0; dy = 10; }
+    }
+
+    if (document.getElementById('dpad-up')) {
+        document.getElementById('dpad-up').addEventListener('click', () => triggerDirection('UP'));
+        document.getElementById('dpad-left').addEventListener('click', () => triggerDirection('LEFT'));
+        document.getElementById('dpad-right').addEventListener('click', () => triggerDirection('RIGHT'));
+        document.getElementById('dpad-down').addEventListener('click', () => triggerDirection('DOWN'));
+    }
+
+    document.addEventListener("keydown", changeDirection);
+
+    if (startSnakeBtn) {
+        startSnakeBtn.addEventListener('click', () => {
+            if (gameInterval) clearTimeout(gameInterval);
+            startSnakeBtn.style.display = 'none';
+            gameStarted = true;
+            initGame();
+            main();
+            // Optional: prevent default scrolling when playing
+            canvas.focus();
+        });
+    }
+
 });

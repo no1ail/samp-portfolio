@@ -29,13 +29,13 @@
     <nav>
         <div class="logo">IC.</div>
         <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="gear.html">Gear</a></li>
-            <li><a href="#feedback">Feedback</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#about"><i class="far fa-user"></i> About</a></li>
+            <li><a href="#skills"><i class="fas fa-code"></i> Skills</a></li>
+            <li><a href="#experience"><i class="fas fa-briefcase"></i> Experience</a></li>
+            <li><a href="#projects"><i class="fas fa-folder-open"></i> Projects</a></li>
+            <li><a href="gear.html"><i class="fas fa-laptop"></i> Gear</a></li>
+            <li><a href="#feedback"><i class="far fa-comment"></i> Feedback</a></li>
+            <li><a href="#contact"><i class="far fa-envelope"></i> Contact</a></li>
         </ul>
 
         <div class="nav-actions">
@@ -53,6 +53,21 @@
             <div class="menu-toggle" id="mobile-menu">
                 <i class="fas fa-bars"></i>
             </div>
+        </div>
+
+        <div class="menu-widget">
+            <div class="viewer-count">
+                <div class="avatars">
+                    <img src="https://i.pravatar.cc/30?u=1" alt="avatar">
+                    <img src="https://i.pravatar.cc/30?u=2" alt="avatar">
+                    <img src="https://i.pravatar.cc/30?u=3" alt="avatar">
+                    <div class="avatar-more">+<span id="live-viewers-plus">0</span></div>
+                </div>
+                <div class="viewing-text"><b><span id="live-viewers">1</span></b> people viewing now</div>
+            </div>
+            
+            <button id="open-chat-btn" class="widget-btn"><i class="far fa-comment-dots"></i> community chat</button>
+            <button id="open-snake-btn" class="widget-btn"><i class="fas fa-gamepad"></i> quick snake</button>
         </div>
     </nav>
 
@@ -109,7 +124,8 @@
         <div class="skills-category">
             <h3 class="fade-in"
                 style="margin-bottom: 1.5rem; color: var(--color-brand); font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
-                <i class="fas fa-code"></i> Web Development</h3>
+                <i class="fas fa-code"></i> Web Development
+            </h3>
             <div class="skills-grid">
                 <div class="glass-card skill-item fade-in">
                     <i class="fab fa-html5"></i>
@@ -141,7 +157,8 @@
         <div class="skills-category" style="margin-top: 3rem;">
             <h3 class="fade-in"
                 style="margin-bottom: 1.5rem; color: var(--color-brand); font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
-                <i class="fas fa-robot"></i> AI Tools</h3>
+                <i class="fas fa-robot"></i> AI Tools
+            </h3>
             <div class="skills-grid">
                 <div class="glass-card skill-item fade-in">
                     <i class="fas fa-brain"></i>
@@ -161,7 +178,8 @@
         <div class="skills-category" style="margin-top: 3rem;">
             <h3 class="fade-in"
                 style="margin-bottom: 1.5rem; color: var(--color-brand); font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
-                <i class="fas fa-briefcase"></i> Productivity & Management</h3>
+                <i class="fas fa-briefcase"></i> Productivity & Management
+            </h3>
             <div class="skills-grid">
                 <div class="glass-card skill-item fade-in">
                     <i class="fab fa-microsoft"></i>
@@ -189,7 +207,8 @@
         <div class="skills-category" style="margin-top: 3rem;">
             <h3 class="fade-in"
                 style="margin-bottom: 1.5rem; color: var(--color-brand); font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;">
-                <i class="fas fa-palette"></i> Design & Media</h3>
+                <i class="fas fa-palette"></i> Design & Media
+            </h3>
             <div class="skills-grid">
                 <div class="glass-card skill-item fade-in">
                     <i class="fas fa-cube"></i>
@@ -211,6 +230,7 @@
                 <span class="tag">HTML</span>
                 <span class="tag">CSS</span>
                 <span class="tag">JavaScript</span>
+                <span class="tag">PHP</span>
             </div>
         </div>
     </section>
@@ -330,6 +350,40 @@
         <p>&copy; 2026 Islam Cabugatan. All rights reserved.</p>
     </footer>
 
+    <!-- Chat Modal -->
+    <div id="chat-modal" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <button class="close-btn" id="close-chat-btn"><i class="fas fa-times"></i></button>
+            <h3>Live Chat</h3>
+            <div id="chat-messages" class="chat-messages"></div>
+            <form id="chat-form" class="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" required>
+                <button type="submit" class="btn" style="padding: 0.8rem 1.5rem;"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Snake Game Modal -->
+    <div id="snake-modal" class="modal-overlay">
+        <div class="modal-content glass-card" style="max-width: 400px; text-align: center;">
+            <button class="close-btn" id="close-snake-btn"><i class="fas fa-times"></i></button>
+            <h3>Snake Game</h3>
+            <div class="snake-score">Score: <span id="snake-score">0</span> | High Score: <span id="snake-high-score">0</span></div>
+            <canvas id="snake-canvas" width="300" height="300" style="background: var(--color-canvas); border: 2px solid var(--color-border); border-radius: 10px; margin: 1rem auto; display: block;"></canvas>
+            
+            <div class="mobile-controls">
+                <button class="dpad-btn" id="dpad-up"><i class="fas fa-arrow-up"></i></button>
+                <div style="display: flex; justify-content: center; gap: 2rem;">
+                    <button class="dpad-btn" id="dpad-left"><i class="fas fa-arrow-left"></i></button>
+                    <button class="dpad-btn" id="dpad-right"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                <button class="dpad-btn" id="dpad-down"><i class="fas fa-arrow-down"></i></button>
+            </div>
+            <button id="start-snake-btn" class="btn" style="width: 100%; margin-top: 1rem;">Start Game</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
 </body>
 
