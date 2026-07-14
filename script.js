@@ -283,6 +283,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Chat Modal UI (Works even without server) ---
     const chatModal = document.getElementById('chat-modal');
+    const openChatBtn = document.getElementById('open-chat-btn');
+    const closeChatBtn = document.getElementById('close-chat-btn');
+    const chatInputFallback = document.getElementById('chat-input');
     const chatFormFallback = document.getElementById('chat-form');
     
     // Fallback logic for Random Guest Name so we have it even offline
