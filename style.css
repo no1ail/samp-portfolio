@@ -583,6 +583,7 @@ footer {
 @media (max-width: 900px) {
     body {
         padding-left: 0;
+        padding-bottom: 80px;
     }
     
     nav {
@@ -595,7 +596,6 @@ footer {
         border-right: none;
         border-bottom: 1px solid var(--color-border);
         overflow-y: visible;
-        flex-wrap: wrap;
     }
     
     .logo {
@@ -610,21 +610,27 @@ footer {
     }
 
     .menu-widget {
+        position: fixed;
+        bottom: 0;
+        left: 0;
         width: 100%;
         flex-direction: row;
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
         gap: 1.5rem;
-        margin-top: 1rem;
-        padding-top: 1rem;
+        margin-top: 0;
+        padding: 0.75rem 1rem;
         border-top: 1px solid var(--color-border);
+        background: var(--color-surface);
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        z-index: 1000;
     }
 
     .hero.section {
         flex-direction: column;
         text-align: center;
-        padding-top: 18rem !important;
+        padding-top: 8rem !important;
     }
 }
 
@@ -654,7 +660,7 @@ footer {
 
     .hero h1 { font-size: 2.5rem; }
     .section { padding: 4rem 5%; }
-    .hero.section { padding-top: 18rem !important; }
+    .hero.section { padding-top: 8rem !important; }
     
     .contact-content {
         flex-direction: column;
