@@ -278,25 +278,19 @@ document.addEventListener('DOMContentLoaded', () => {
             appendMessage(msg);
         });
 
-        if (chatForm) {
-            chatForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (chatInput.value.trim()) {
-                    socket.emit('chat message', {
-                        author: myGuestName,
-                        text: chatInput.value.trim()
-                    });
-                    chatInput.value = '';
-                }
-            });
-        }
+        // Form submission moved outside
     }
 
     // --- Chat Modal UI (Works even without server) ---
     const chatModal = document.getElementById('chat-modal');
-    const openChatBtn = document.getElementById('open-chat-btn');
-    const closeChatBtn = document.getElementById('close-chat-btn');
-    const chatInputFallback = document.getElementById('chat-input');
+    const chatFormFallback = document.getElementById('chat-form');
+    
+    // Fallback logic for Random Guest Name so we have it even offline
+    let myGuestName = localStorage.getItem('guest_name');
+    if (!myGuestName) {
+        myGuestName = 'Guest_' + Math.floor(Math.random() * 10000);
+        localStorage.setItem('guest_name', myGuestName);
+    }
     
     if (openChatBtn) {
         openChatBtn.addEventListener('click', () => {
@@ -307,6 +301,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closeChatBtn) {
         closeChatBtn.addEventListener('click', () => {
             chatModal.classList.remove('active');
+        });
+    }
+
+    if (chatFormFallback) {
+        chatFormFallback.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const messageText = chatInputFallback.value.trim();
+            if (messageText) {
+                // If socket exists, emit to server
+                if (typeof io !== 'undefined') {
+                    const socket = io();
+                    socket.emit('chat message', {
+                        author: myGuestName,
+                        text: messageText
+                    });
+                } else {
+                    // Fallback: If no server (running locally via file://), just show the message locally
+                    const chatMessages = document.getElementById('chat-messages');
+                    const msgEl = document.createElement('div');
+                    msgEl.classList.add('chat-message', 'self');
+                    msgEl.innerHTML = `<div class="chat-author">${myGuestName} (Offline)</div><div>${messageText}</div>`;
+                    chatMessages.appendChild(msgEl);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+                chatInputFallback.value = '';
+            }
         });
     }
 
