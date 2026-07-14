@@ -235,10 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (viewerCountPlusEl) viewerCountPlusEl.innerText = count > 3 ? (count - 3) : 0;
         });
 
-        // Chat UI Elements
-        const chatModal = document.getElementById('chat-modal');
-        const openChatBtn = document.getElementById('open-chat-btn');
-        const closeChatBtn = document.getElementById('close-chat-btn');
+        // Chat socket bindings
         const chatForm = document.getElementById('chat-form');
         const chatInput = document.getElementById('chat-input');
         const chatMessages = document.getElementById('chat-messages');
@@ -250,19 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('guest_name', myGuestName);
         }
 
-        // Open/Close Chat
-        if (openChatBtn) {
-            openChatBtn.addEventListener('click', () => {
-                chatModal.classList.add('active');
-                setTimeout(() => chatInput.focus(), 300);
-            });
-        }
-        if (closeChatBtn) {
-            closeChatBtn.addEventListener('click', () => {
-                chatModal.classList.remove('active');
-            });
-        }
-
+        // Open/Close chat removed from here
         function appendMessage(msg) {
             if (!chatMessages) return;
             const isSelf = msg.author === myGuestName;
@@ -305,6 +290,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
+    }
+
+    // --- Chat Modal UI (Works even without server) ---
+    const chatModal = document.getElementById('chat-modal');
+    const openChatBtn = document.getElementById('open-chat-btn');
+    const closeChatBtn = document.getElementById('close-chat-btn');
+    const chatInputFallback = document.getElementById('chat-input');
+    
+    if (openChatBtn) {
+        openChatBtn.addEventListener('click', () => {
+            chatModal.classList.add('active');
+            if (chatInputFallback) setTimeout(() => chatInputFallback.focus(), 300);
+        });
+    }
+    if (closeChatBtn) {
+        closeChatBtn.addEventListener('click', () => {
+            chatModal.classList.remove('active');
+        });
     }
 
     // --- Snake Game ---
