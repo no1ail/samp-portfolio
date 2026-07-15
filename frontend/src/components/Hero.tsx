@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import profileImg from "../assets/profile.jpg";
 
 export default function Hero() {
   const [text1, setText1] = useState("");
@@ -114,7 +115,7 @@ export default function Hero() {
           </div>
         </div>
         <div className="hero-profile-container" style={{ display: "flex", justifyContent: "center" }}>
-          <img src="/profile.jpg" alt="Islam Cabugatan" className="hero-profile-img" />
+          <img src={profileImg} alt="Islam Cabugatan" className="hero-profile-img" />
         </div>
       </div>
     </section>
