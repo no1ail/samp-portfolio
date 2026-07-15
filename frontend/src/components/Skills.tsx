@@ -15,15 +15,12 @@ const aiSkills = [
   { icon: "fas fa-bolt", name: "Claude", color: "#D97757" },
 ];
 
-const productivitySkills = [
+const productivityAndDesignSkills = [
   { icon: "fab fa-microsoft", name: "Microsoft Office", color: "#D83B01" },
   { icon: "fab fa-google", name: "Google Workspace", color: "#4285F4" },
   { icon: "fab fa-hubspot", name: "HubSpot", color: "#FF7A59" },
   { icon: "fab fa-jira", name: "Jira", color: "#0052CC" },
   { icon: "fab fa-intercom", name: "Intercom", color: "#1A8B9D" },
-];
-
-const designSkills = [
   { icon: "fas fa-cube", name: "Blender3D", color: "#EA7600" },
 ];
 
@@ -101,25 +98,9 @@ export default function Skills() {
             gap: "0.5rem",
           }}
         >
-          <i className="fas fa-briefcase"></i> Productivity & Management
+          <i className="fas fa-tools"></i> Productivity & Design
         </h3>
-        <MarqueeRow items={productivitySkills} speed={22} />
-      </div>
-
-      <div className="skills-category" style={{ marginTop: "3rem" }}>
-        <h3
-          style={{
-            marginBottom: "1.5rem",
-            color: "var(--color-brand)",
-            fontSize: "1.2rem",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-          }}
-        >
-          <i className="fas fa-palette"></i> Design & Media
-        </h3>
-        <MarqueeRow items={designSkills} speed={15} />
+        <MarqueeRow items={productivityAndDesignSkills} speed={22} />
       </div>
     </section>
   );
