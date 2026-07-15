@@ -1,3 +1,58 @@
+import React from "react";
+
+const webDevSkills = [
+  { icon: "fab fa-html5", name: "HTML5", color: "#E34F26" },
+  { icon: "fab fa-css3-alt", name: "CSS3", color: "#1572B6" },
+  { icon: "fab fa-js", name: "JavaScript", color: "#F7DF1E" },
+  { icon: "fab fa-react", name: "React", color: "#61DAFB" },
+  { icon: "fab fa-php", name: "PHP", color: "#777BB4" },
+  { icon: "fas fa-database", name: "MySQL", color: "#4479A1" },
+];
+
+const aiSkills = [
+  { icon: "fas fa-brain", name: "ChatGPT", color: "#10A37F" },
+  { icon: "fas fa-robot", name: "Gemini", color: "#8E75B2" },
+  { icon: "fas fa-bolt", name: "Claude", color: "#D97757" },
+];
+
+const productivitySkills = [
+  { icon: "fab fa-microsoft", name: "Microsoft Office", color: "#D83B01" },
+  { icon: "fab fa-google", name: "Google Workspace", color: "#4285F4" },
+  { icon: "fab fa-hubspot", name: "HubSpot", color: "#FF7A59" },
+  { icon: "fab fa-jira", name: "Jira", color: "#0052CC" },
+  { icon: "fab fa-intercom", name: "Intercom", color: "#1A8B9D" },
+];
+
+const designSkills = [
+  { icon: "fas fa-cube", name: "Blender3D", color: "#EA7600" },
+];
+
+const MarqueeRow = ({ items, speed = 20 }: { items: any[], speed?: number }) => {
+  const repeatCount = Math.max(2, Math.ceil(12 / items.length));
+  const repeatedItems = Array(repeatCount).fill(items).flat();
+
+  return (
+    <div className="skills-marquee-container">
+      <div className="skills-marquee-content" style={{ animationDuration: `${speed}s` }}>
+        {repeatedItems.map((skill, index) => (
+          <div className="glass-card skill-item" key={`a-${index}`}>
+            <i className={skill.icon} style={{ color: skill.color }}></i>
+            <h3>{skill.name}</h3>
+          </div>
+        ))}
+      </div>
+      <div className="skills-marquee-content" style={{ animationDuration: `${speed}s` }} aria-hidden="true">
+        {repeatedItems.map((skill, index) => (
+          <div className="glass-card skill-item" key={`b-${index}`}>
+            <i className={skill.icon} style={{ color: skill.color }}></i>
+            <h3>{skill.name}</h3>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default function Skills() {
   return (
     <section id="skills" className="section fade-in visible">
@@ -16,32 +71,7 @@ export default function Skills() {
         >
           <i className="fas fa-code"></i> Web Development
         </h3>
-        <div className="skills-grid">
-          <div className="glass-card skill-item">
-            <i className="fab fa-html5"></i>
-            <h3>HTML5</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fab fa-css3-alt"></i>
-            <h3>CSS3</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fab fa-js"></i>
-            <h3>JavaScript</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fab fa-react"></i>
-            <h3>React</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fab fa-php"></i>
-            <h3>PHP</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fas fa-database"></i>
-            <h3>MySQL</h3>
-          </div>
-        </div>
+        <MarqueeRow items={webDevSkills} speed={25} />
       </div>
 
       <div className="skills-category" style={{ marginTop: "3rem" }}>
@@ -57,20 +87,7 @@ export default function Skills() {
         >
           <i className="fas fa-robot"></i> AI Tools
         </h3>
-        <div className="skills-grid">
-          <div className="glass-card skill-item">
-            <i className="fas fa-brain"></i>
-            <h3>ChatGPT</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fas fa-robot"></i>
-            <h3>Gemini</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fas fa-bolt"></i>
-            <h3>Claude</h3>
-          </div>
-        </div>
+        <MarqueeRow items={aiSkills} speed={20} />
       </div>
 
       <div className="skills-category" style={{ marginTop: "3rem" }}>
@@ -86,28 +103,7 @@ export default function Skills() {
         >
           <i className="fas fa-briefcase"></i> Productivity & Management
         </h3>
-        <div className="skills-grid">
-          <div className="glass-card skill-item">
-            <i className="fab fa-microsoft"></i>
-            <h3>Microsoft Office</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fab fa-google"></i>
-            <h3>Google Workspace</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fab fa-hubspot"></i>
-            <h3>HubSpot</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fab fa-jira"></i>
-            <h3>Jira</h3>
-          </div>
-          <div className="glass-card skill-item">
-            <i className="fab fa-intercom"></i>
-            <h3>Intercom</h3>
-          </div>
-        </div>
+        <MarqueeRow items={productivitySkills} speed={22} />
       </div>
 
       <div className="skills-category" style={{ marginTop: "3rem" }}>
@@ -123,12 +119,7 @@ export default function Skills() {
         >
           <i className="fas fa-palette"></i> Design & Media
         </h3>
-        <div className="skills-grid">
-          <div className="glass-card skill-item">
-            <i className="fas fa-cube"></i>
-            <h3>Blender3D</h3>
-          </div>
-        </div>
+        <MarqueeRow items={designSkills} speed={15} />
       </div>
     </section>
   );

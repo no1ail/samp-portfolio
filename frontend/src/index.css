@@ -422,6 +422,36 @@ input:checked + .slider:before {
     gap: 1.5rem;
 }
 
+.skills-marquee-container {
+    display: flex;
+    overflow: hidden;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    width: 100%;
+}
+
+.skills-marquee-content {
+    display: flex;
+    gap: 1.5rem;
+    animation: marquee-scroll 20s linear infinite;
+    min-width: max-content;
+    flex-shrink: 0;
+}
+
+.skills-marquee-container:hover .skills-marquee-content {
+    animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-100% - 1.5rem)); }
+}
+
+.skills-marquee-content .skill-item {
+    width: 200px;
+    flex-shrink: 0;
+}
+
 .skill-item {
     text-align: center;
     padding: 1.5rem;
