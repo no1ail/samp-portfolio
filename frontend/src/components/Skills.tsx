@@ -1,4 +1,4 @@
-import React from "react";
+
 
 const webDevSkills = [
   { icon: "fab fa-html5", name: "HTML5", color: "#E34F26" },
