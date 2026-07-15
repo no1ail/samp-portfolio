@@ -1,21 +1,15 @@
 
 
-const webDevSkills = [
+const allSkills = [
   { icon: "fab fa-html5", name: "HTML5", color: "#E34F26" },
   { icon: "fab fa-css3-alt", name: "CSS3", color: "#1572B6" },
   { icon: "fab fa-js", name: "JavaScript", color: "#F7DF1E" },
   { icon: "fab fa-react", name: "React", color: "#61DAFB" },
   { icon: "fab fa-php", name: "PHP", color: "#777BB4" },
   { icon: "fas fa-database", name: "MySQL", color: "#4479A1" },
-];
-
-const aiSkills = [
   { icon: "fas fa-brain", name: "ChatGPT", color: "#10A37F" },
   { icon: "fas fa-robot", name: "Gemini", color: "#8E75B2" },
   { icon: "fas fa-bolt", name: "Claude", color: "#D97757" },
-];
-
-const productivityAndDesignSkills = [
   { icon: "fab fa-microsoft", name: "Microsoft Office", color: "#D83B01" },
   { icon: "fab fa-google", name: "Google Workspace", color: "#4285F4" },
   { icon: "fab fa-hubspot", name: "HubSpot", color: "#FF7A59" },
@@ -54,54 +48,7 @@ export default function Skills() {
   return (
     <section id="skills" className="section fade-in visible">
       <h2>Skills</h2>
-
-      <div className="skills-category">
-        <h3
-          style={{
-            marginBottom: "1.5rem",
-            color: "var(--color-brand)",
-            fontSize: "1.2rem",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-          }}
-        >
-          <i className="fas fa-code"></i> Web Development
-        </h3>
-        <MarqueeRow items={webDevSkills} speed={25} />
-      </div>
-
-      <div className="skills-category" style={{ marginTop: "3rem" }}>
-        <h3
-          style={{
-            marginBottom: "1.5rem",
-            color: "var(--color-brand)",
-            fontSize: "1.2rem",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-          }}
-        >
-          <i className="fas fa-robot"></i> AI Tools
-        </h3>
-        <MarqueeRow items={aiSkills} speed={20} />
-      </div>
-
-      <div className="skills-category" style={{ marginTop: "3rem" }}>
-        <h3
-          style={{
-            marginBottom: "1.5rem",
-            color: "var(--color-brand)",
-            fontSize: "1.2rem",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-          }}
-        >
-          <i className="fas fa-tools"></i> Productivity & Design
-        </h3>
-        <MarqueeRow items={productivityAndDesignSkills} speed={22} />
-      </div>
+      <MarqueeRow items={allSkills} speed={40} />
     </section>
   );
 }
